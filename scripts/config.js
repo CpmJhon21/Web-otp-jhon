@@ -8,7 +8,7 @@ class Config {
             return process.env.API_KEY;
         }
         // Untuk GitHub Pages: Gunakan variable dari window
-        return window.API_KEY || 'YOUR_API_KEY_HERE';
+        return window.API_KEY || 'otp_JrwkBqJXMGzWVSPE';
     }
     
     static getHeaders() {
