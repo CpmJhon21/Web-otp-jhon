@@ -1,44 +1,55 @@
-// Konfigurasi API
+// scripts/config.js - Kode yang Diperbaiki
 class Config {
     static BASE_URL = 'https://www.rumahotp.com/api';
     
     static getApiKey() {
-        // Untuk Vercel/Replit: Gunakan environment variable
-        if (typeof process !== 'undefined' && process.env) {
-            return process.env.API_KEY;
-        }
-        // Untuk GitHub Pages: Gunakan variable dari window
-        return window.API_KEY || 'otp_JrwkBqJXMGzWVSPE';
+        // Untuk development/testing - langsung return API key
+        // Jika ingin deploy, ganti dengan API key Anda
+        return 'otp_zyUwvkagNwjgaeiq'; // ← GANTI INI!
     }
     
     static getHeaders() {
         return {
             'x-apikey': this.getApiKey(),
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Accept': 'application/json'
         };
     }
     
-    static async request(endpoint, method = 'GET', data = null) {
+    static async request(endpoint, method = 'GET', params = null) {
         try {
-            const options = {
+            const url = endpoint.startsWith('http') ? endpoint : `${this.BASE_URL}/${endpoint}`;
+            
+            const config = {
                 method: method,
-                url: `${this.BASE_URL}/${endpoint}`,
+                url: url,
                 headers: this.getHeaders()
             };
             
-            if (data && method !== 'GET') {
-                options.data = data;
-            } else if (data) {
-                // Untuk GET request dengan query params
-                options.params = data;
+            if (params) {
+                if (method === 'GET') {
+                    config.params = params;
+                } else {
+                    config.data = params;
+                }
             }
             
-            const response = await axios(options);
+            console.log('API Request:', config);
+            const response = await axios(config);
+            console.log('API Response:', response.data);
             return response.data;
         } catch (error) {
-            console.error('API Error:', error);
-            throw error;
+            console.error('API Error Details:', {
+                message: error.message,
+                response: error.response?.data,
+                status: error.response?.status
+            });
+            
+            // Return error object that UI can handle
+            return {
+                success: false,
+                error: error.message,
+                status: error.response?.status
+            };
         }
     }
 }
