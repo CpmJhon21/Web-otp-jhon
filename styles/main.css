@@ -752,4 +752,112 @@ body {
     .orders-table table {
         min-width: 600px;
     }
-  }
+    
+    /* Toastify Customization */
+.toastify {
+    font-family: 'Poppins', sans-serif;
+    border-radius: var(--radius);
+    padding: 15px 20px;
+    font-weight: 500;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--gray);
+}
+
+.empty-state i {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    color: var(--gray-light);
+}
+
+.empty-state p {
+    font-size: 1.1rem;
+}
+
+/* API Warning Modal */
+.api-warning-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+    padding: 20px;
+}
+
+.api-warning-modal > div {
+    background: white;
+    padding: 30px;
+    border-radius: var(--radius);
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.api-warning-modal h3 {
+    color: #e74c3c;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.api-warning-modal pre {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: var(--radius-sm);
+    margin: 15px 0;
+    text-align: left;
+    overflow-x: auto;
+    font-family: monospace;
+    font-size: 14px;
+    border: 1px solid var(--gray-light);
+}
+
+.api-warning-modal button {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 20px;
+    transition: var(--transition);
+}
+
+.api-warning-modal button:hover {
+    background: var(--primary-dark);
+}
+
+/* Loading states */
+.loading {
+    position: relative;
+    min-height: 100px;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--gray-light);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+}
