@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RumaOTP - SMS Verification Service</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loader">
+            <div class="loader-circle"></div>
+            <p>Loading RumaOTP...</p>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-sms"></i>
+                <span>Ruma<span class="gradient-text">OTP</span></span>
+            </div>
+            <div class="nav-links">
+                <a href="#dashboard" class="nav-link active"><i class="fas fa-home"></i> Dashboard</a>
+                <a href="#services" class="nav-link"><i class="fas fa-mobile-alt"></i> Services</a>
+                <a href="#countries" class="nav-link"><i class="fas fa-globe"></i> Countries</a>
+                <a href="#orders" class="nav-link"><i class="fas fa-shopping-cart"></i> Orders</a>
+                <a href="#balance" class="nav-link"><i class="fas fa-wallet"></i> Balance</a>
+            </div>
+            <div class="nav-actions">
+                <button id="themeToggle" class="btn-icon">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <div class="user-menu">
+                    <button id="userBtn" class="btn-user">
+                        <i class="fas fa-user-circle"></i>
+                        <span id="username">Guest</span>
+                    </button>
+                </div>
+            </div>
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="section active">
+            <div class="hero">
+                <h1 class="hero-title">Welcome to <span class="gradient-text">RumaOTP</span></h1>
+                <p class="hero-subtitle">Premium SMS Verification Service for 1000+ Applications</p>
+                <div class="hero-stats">
+                    <div class="stat-card">
+                        <i class="fas fa-globe"></i>
+                        <h3>50+</h3>
+                        <p>Countries</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-mobile-alt"></i>
+                        <h3>1000+</h3>
+                        <p>Services</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-bolt"></i>
+                        <h3>99%</h3>
+                        <p>Success Rate</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-clock"></i>
+                        <h3>15s</h3>
+                        <p>Average Delivery</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <h2><i class="fas fa-bolt"></i> Quick Actions</h2>
+                <div class="action-grid">
+                    <button class="action-btn" id="checkBalance">
+                        <i class="fas fa-wallet"></i>
+                        <span>Check Balance</span>
+                    </button>
+                    <button class="action-btn" id="viewServices">
+                        <i class="fas fa-list"></i>
+                        <span>View Services</span>
+                    </button>
+                    <button class="action-btn" id="createOrder">
+                        <i class="fas fa-plus-circle"></i>
+                        <span>New Order</span>
+                    </button>
+                    <button class="action-btn" id="depositFunds">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <span>Deposit</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Recent Orders -->
+            <div class="recent-orders">
+                <h2><i class="fas fa-history"></i> Recent Orders</h2>
+                <div class="orders-list" id="recentOrders">
+                    <!-- Orders will be loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="section">
+            <div class="section-header">
+                <h2><i class="fas fa-mobile-alt"></i> Available Services</h2>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="serviceSearch" placeholder="Search services...">
+                </div>
+            </div>
+            <div class="services-grid" id="servicesGrid">
+                <!-- Services will be loaded here -->
+            </div>
+        </section>
+
+        <!-- Countries Section -->
+        <section id="countries" class="section">
+            <div class="section-header">
+                <h2><i class="fas fa-globe"></i> Available Countries</h2>
+                <select id="countryFilter" class="filter-select">
+                    <option value="">All Services</option>
+                </select>
+            </div>
+            <div class="countries-grid" id="countriesGrid">
+                <!-- Countries will be loaded here -->
+            </div>
+        </section>
+
+        <!-- Orders Section -->
+        <section id="orders" class="section">
+            <div class="section-header">
+                <h2><i class="fas fa-shopping-cart"></i> Order Management</h2>
+                <button class="btn-primary" id="newOrderBtn">
+                    <i class="fas fa-plus"></i> New Order
+                </button>
+            </div>
+            
+            <!-- Order Form (Initially Hidden) -->
+            <div class="order-form" id="orderForm" style="display: none;">
+                <h3><i class="fas fa-cart-plus"></i> Create New Order</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label><i class="fas fa-flag"></i> Country</label>
+                        <select id="orderCountry" class="form-control" required>
+                            <option value="">Select Country</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-mobile-alt"></i> Service</label>
+                        <select id="orderService" class="form-control" required>
+                            <option value="">Select Service</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-network-wired"></i> Operator</label>
+                        <select id="orderOperator" class="form-control">
+                            <option value="any">Any Operator</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button class="btn-secondary" id="cancelOrderBtn">Cancel</button>
+                    <button class="btn-primary" id="submitOrderBtn">Create Order</button>
+                </div>
+            </div>
+
+            <!-- Active Orders -->
+            <div class="active-orders">
+                <h3><i class="fas fa-sync"></i> Active Orders</h3>
+                <div class="orders-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Phone Number</th>
+                                <th>Service</th>
+                                <th>Status</th>
+                                <th>Expires</th>
+                                <th>OTP Code</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="activeOrdersTable">
+                            <!-- Orders will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Balance Section -->
+        <section id="balance" class="section">
+            <div class="balance-card">
+                <div class="balance-header">
+                    <h2><i class="fas fa-wallet"></i> Account Balance</h2>
+                    <button class="btn-primary" id="refreshBalance">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+                <div class="balance-info">
+                    <div class="balance-amount">
+                        <span class="balance-label">Current Balance:</span>
+                        <span class="balance-value" id="currentBalance">Rp0</span>
+                    </div>
+                    <div class="balance-details">
+                        <div class="detail-item">
+                            <i class="fas fa-key"></i>
+                            <span>API Key: <code id="apiKey">••••••••••••••••</code></span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-user"></i>
+                            <span>Username: <span id="userName">-</span></span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>Email: <span id="userEmail">-</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Deposit Section -->
+            <div class="deposit-section">
+                <h3><i class="fas fa-money-bill-wave"></i> Deposit Funds</h3>
+                <div class="deposit-form">
+                    <div class="form-group">
+                        <label><i class="fas fa-coins"></i> Amount (IDR)</label>
+                        <input type="number" id="depositAmount" class="form-control" placeholder="Enter amount" min="1000" step="1000">
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-credit-card"></i> Payment Method</label>
+                        <select id="paymentMethod" class="form-control">
+                            <option value="qris">QRIS</option>
+                            <option value="dana">DANA</option>
+                            <option value="ovo">OVO</option>
+                        </select>
+                    </div>
+                    <button class="btn-success" id="depositBtn">
+                        <i class="fas fa-paper-plane"></i> Process Deposit
+                    </button>
+                </div>
+            </div>
+
+            <!-- Transaction History -->
+            <div class="transaction-history">
+                <h3><i class="fas fa-history"></i> Recent Transactions</h3>
+                <div class="transactions-list" id="transactionsList">
+                    <!-- Transactions will be loaded here -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <i class="fas fa-sms"></i>
+                <span>Ruma<span class="gradient-text">OTP</span></span>
+            </div>
+            <div class="footer-links">
+                <a href="#"><i class="fab fa-github"></i> GitHub</a>
+                <a href="#"><i class="fas fa-book"></i> Documentation</a>
+                <a href="#"><i class="fas fa-question-circle"></i> Support</a>
+                <a href="#"><i class="fas fa-shield-alt"></i> Privacy</a>
+            </div>
+            <div class="footer-copyright">
+                © 2024 RumaOTP. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    <div class="modal" id="orderModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Order Details</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body" id="orderModalBody">
+                <!-- Order details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="scripts/config.js"></script>
+    <script src="scripts/api.js"></script>
+    <script src="scripts/ui.js"></script>
+    <script src="scripts/main.js"></script>
+</body>
+</html>
